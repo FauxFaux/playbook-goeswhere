@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+
+if [ $# -eq 0 ]; then
+    echo "usage: $0 limit-prefix [extra arguments ...]"
+    exit 2
+fi
+
+limit=--limit="$1"\*
+shift
+
+ansible-playbook site.yml --ask-become-pass --inventory-file=hosts ${limit} "$@"
+

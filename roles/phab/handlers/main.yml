@@ -1,0 +1,9 @@
+- include: shared/handlers.yml
+
+- name: restart php-fpm
+  become: yes
+  service: name=php7.0-fpm state=restarted
+
+- name: restart phabricator-daemon
+  become: yes
+  service: name=phabricator-daemon state=restarted

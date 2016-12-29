@@ -1,0 +1,19 @@
+#!/usr/bin/python3
+
+import json
+
+
+def hosts():
+    return {
+        'phab': {'hosts': ['blind.goeswhere.com']},
+        '_meta': {'hostvars': {}},
+    }
+
+
+def main():
+    import sys
+    json.dump(hosts(), sys.stdout)
+
+
+if '__main__' == __name__:
+    main()
