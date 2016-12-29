@@ -1,0 +1,23 @@
+modules:
+  http200:
+    prober: http
+    timeout: 10s
+    http:
+      protocol: "tcp4"
+  ssl_connect_nocheck:
+    prober: tcp
+    timeout: 5s
+    tcp:
+      protocol: "tcp4"
+      tls: true
+      tls_config:
+        insecure_skip_verify: true
+  pg_connect_nocheck:
+    prober: tcp
+    timeout: 5s
+    tcp:
+      protocol: "tcp4"
+      tls: true
+      tls_config:
+        insecure_skip_verify: true
+        starttls: postgres

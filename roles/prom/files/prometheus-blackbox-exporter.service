@@ -1,0 +1,39 @@
+[Unit]
+Description=Blackbox Exporter for Prometheus
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+User=prom-blackbox
+Group=prom-blackbox
+
+WorkingDirectory=/etc/prometheus
+ExecStart=/usr/local/bin/blackbox_exporter
+
+Restart=on-failure
+
+#[Hardening]
+
+# No filesystem by default
+
+# strict isn't supported in Ubuntu 16.04, so start with full then try to upgrade
+ProtectSystem=full
+ProtectSystem=strict
+
+# these three protects aren't supported in Ubuntu 16.04, but don't add value as we should have no privs
+ProtectKernelTunables=true
+ProtectControlGroups=true
+ProtectKernelModules=true
+
+ProtectHome=true
+
+PrivateDevices=true
+PrivateTmp=true
+
+# shouldn't need to elevate
+NoNewPrivileges=true
+CapabilityBoundingSet=
+
+# shouldn't need to launch many tasks
+TasksMax=10

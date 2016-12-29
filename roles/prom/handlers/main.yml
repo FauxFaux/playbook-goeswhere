@@ -1,0 +1,9 @@
+- include: shared/handlers.yml
+
+- name: reload prometheus
+  become: yes
+  service: name=prometheus-server state=reloaded
+
+- name: reload prometheus alertmanager
+  become: yes
+  service: name=prometheus-alertmanager state=reloaded

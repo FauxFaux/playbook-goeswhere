@@ -4,10 +4,15 @@ import json
 
 
 def hosts():
-    return {
-        'phab': {'hosts': ['blind.goeswhere.com']},
+
+    ret = {
         '_meta': {'hostvars': {}},
     }
+
+    for role in ['phab', 'prom']:
+        ret[role] = {'hosts': ['blind.goeswhere.com']}
+
+    return ret
 
 
 def main():

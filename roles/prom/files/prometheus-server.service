@@ -1,0 +1,50 @@
+[Unit]
+Description=Prometheus Server
+Wants=blackbox-exporter.service prometheus-alertmanager.service
+After=blackbox-exporter.service prometheus-alertmanager.service
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+User=prom-server
+Group=prom-server
+
+WorkingDirectory=/var/lib/prometheus
+ExecStart=/usr/local/bin/prometheus \
+    -alertmanager.url=http://localhost:9093/alert-manager/ \
+    -config.file=/etc/prometheus/prometheus.yml \
+    -storage.local.path=/var/lib/prometheus/data \
+    -storage.local.retention=1800h0m0s \
+    -web.listen-address=localhost:9090 \
+    -web.external-url=https://prometheus.goeswhere.com/
+
+ReadWriteDirectories=/var/lib/prometheus
+
+ExecReload=/bin/kill -HUP $MAINPID
+
+Restart=on-failure
+
+#[Hardening]
+
+# No filesystem by default
+
+# strict isn't supported in Ubuntu 16.04, so start with full then try to upgrade
+ProtectSystem=full
+ProtectSystem=strict
+
+# these three protects aren't supported in Ubuntu 16.04, but don't add value as we should have no privs
+ProtectKernelTunables=true
+ProtectControlGroups=true
+ProtectKernelModules=true
+
+ProtectHome=true
+
+PrivateDevices=true
+PrivateTmp=true
+
+# shouldn't need to elevate
+NoNewPrivileges=true
+CapabilityBoundingSet=
+
+TasksMax=40

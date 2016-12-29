@@ -1,0 +1,43 @@
+[Unit]
+Description=Prometheus AlertManager
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+User=prom-server
+Group=prom-server
+
+WorkingDirectory=/var/lib/prometheus/alertmanager
+ExecStart=/usr/local/bin/alertmanager \
+    -config.file=/etc/prometheus/alertmanager.yml \
+    -web.listen-address=localhost:9093 \
+    -web.external-url=https://prometheus.goeswhere.com/alert-manager/
+
+ExecReload=/bin/kill -HUP $MAINPID
+
+Restart=on-failure
+
+#[Hardening]
+
+# No filesystem by default
+
+# strict isn't supported in Ubuntu 16.04, so start with full then try to upgrade
+ProtectSystem=full
+ProtectSystem=strict
+
+# these three protects aren't supported in Ubuntu 16.04, but don't add value as we should have no privs
+ProtectKernelTunables=true
+ProtectControlGroups=true
+ProtectKernelModules=true
+
+ProtectHome=true
+
+PrivateDevices=true
+PrivateTmp=true
+
+# shouldn't need to elevate
+NoNewPrivileges=true
+CapabilityBoundingSet=
+
+TasksMax=40

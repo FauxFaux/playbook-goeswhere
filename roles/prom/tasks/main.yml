@@ -1,0 +1,73 @@
+- name: users
+  become: yes
+  user: name={{ item }} system=yes
+  with_items:
+    - prom-server
+    - prom-blackbox
+
+- name: copy prometheus binaries
+  become: yes
+  copy:
+    src={{ item }}
+    dest=/usr/local/bin/{{ item }}
+    mode=a+rx
+  with_items:
+    - alertmanager
+    - prometheus
+    - promtool
+    - blackbox_exporter
+
+- name: config dir
+  become: yes
+  file:
+    name=/etc/prometheus
+    state=directory
+
+- name: data directory
+  become: yes
+  file:
+    name=/var/lib/prometheus
+    state=directory
+    owner=prom-server
+
+- name: alertmanager data directory
+  become: yes
+  file:
+    name=/var/lib/prometheus/alertmanager
+    state=directory
+    owner=prom-server
+
+- name: copy config
+  become: yes
+  template: src={{ item }} dest=/etc/prometheus/{{ item.replace('.j2', '') }}
+  notify: reload prometheus
+  with_items:
+    - alerts.conf.j2
+    - blackbox.yml
+    - prometheus.yml
+    - alertmanager.yml
+
+
+- name: copy prometheus server unit
+  become: yes
+  systemd_unit: src=prometheus-server.service
+
+- name: copy prometheus alertmanager unit
+  become: yes
+  systemd_unit: src=prometheus-alertmanager.service
+
+- name: copy prometheus blackbox-exporter unit
+  become: yes
+  systemd_unit: src=prometheus-blackbox-exporter.service
+
+- name: nginx triggers
+  become: yes
+  file:
+    name=/srv/prometheus.goeswhere.com
+    state=directory
+
+- name: nginx fragment
+  become: yes
+  copy:
+    src=prom-nginx.frag
+    dest=/srv/.prometheus.goeswhere.com.nginx
