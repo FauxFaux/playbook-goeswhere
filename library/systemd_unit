@@ -1,0 +1,77 @@
+#!/usr/bin/env python
+
+import configparser
+
+
+def main():
+    module = AnsibleModule(
+        argument_spec=dict(
+            src=dict(required=True, type='path'),
+            dest=dict(type='path'),
+            restart=dict(type='bool', default=True)
+        ),
+        supports_check_mode=True
+    )
+
+    src = module.params['src']
+    dest = module.params['dest']
+    restart = module.params['restart']
+
+    service_name = os.path.basename(dest)
+
+    changed = False
+    needs_reload = False
+
+    if src:
+        # if this is set, the plugin has copied the file and given us
+        # the path of the temporary file
+
+        if module.check_mode:
+            module.exit_json(changed=True)
+
+        shutil.move(src, dest)
+        changed = True
+        needs_reload = True
+
+    # TODO: in hindsight, systemd unit files are absolutely nothing like
+    # TODO: ini files. Duplicate keys with clearing, line continuation.
+    # TODO: maybe parsing show is better...
+    ini = configparser.ConfigParser(strict=False)
+    with open(dest, 'r') as f:
+        ini.read_file(f)
+
+    wanted_by_config = ini.get('Install', 'WantedBy', fallback={})
+    wanted_by_parts = re.findall('\S+', wanted_by_config)
+
+    # TODO: is this the actual behaviour?
+    wanted_by = [x + '.service' if '.' not in x else x for x in wanted_by_parts]
+
+    if missing_want(wanted_by, service_name):
+        if module.check_mode:
+            module.exit_json(changed=True)
+
+        subprocess.check_call(['systemctl', 'enable', service_name])
+        changed = True
+
+    if needs_reload:
+        subprocess.check_call(['systemctl', 'daemon-reload'])
+        changed = True
+
+    if changed and restart:
+        subprocess.check_call(['systemctl', 'restart', service_name])
+
+    module.exit_json(changed=changed)
+
+
+def missing_want(wanted_by, service_name):
+    for want in wanted_by:
+        if not os.path.exists('/etc/systemd/system/{}.wants/{}'.format(want, service_name)):
+            return True
+
+    return False
+
+
+# import module snippets
+from ansible.module_utils.basic import *
+
+main()
