@@ -1,0 +1,22 @@
+- name: users
+  become: yes
+  user: name={{ item }} system=yes
+  with_items:
+    - prom-exporter
+
+- name: custom groups
+  become: yes
+  user: name={{ item }}
+  with_items:
+    - can-ssh
+
+- name: copy binaries
+  become: yes
+  copy:
+    src={{ item }}
+    dest=/usr/local/bin/{{ item }}
+    mode=a+rx
+  with_items:
+    - node_exporter
+
+- include: node-exporter.yml

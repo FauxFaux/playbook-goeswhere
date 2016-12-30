@@ -1,0 +1,41 @@
+[Unit]
+Description=Node Exporter for Prometheus
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+User=prom-exporter
+Group=prom-exporter
+
+WorkingDirectory=/var/lib/node-exporter
+ExecStart=/usr/local/bin/node_exporter \
+    -collector.textfile.directory=. \
+    -web.listen-address=localhost:9100
+
+Restart=on-failure
+
+#[Hardening]
+
+# No filesystem by default
+
+# strict isn't supported in Ubuntu 16.04, so start with full then try to upgrade
+ProtectSystem=full
+ProtectSystem=strict
+
+# these three protects aren't supported in Ubuntu 16.04, but don't add value as we should have no privs
+ProtectKernelTunables=true
+ProtectControlGroups=true
+ProtectKernelModules=true
+
+ProtectHome=true
+
+PrivateDevices=true
+PrivateTmp=true
+
+# shouldn't need to elevate
+NoNewPrivileges=true
+CapabilityBoundingSet=
+
+# shouldn't need to launch many tasks
+TasksMax=10
