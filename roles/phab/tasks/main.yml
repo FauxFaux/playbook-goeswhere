@@ -60,22 +60,9 @@
     umask=0022
   become: yes
 
-- set_fact:
-    phab_services:
-      - phabricator-daemon.service
-
-- name: copy services
-  become: yes
-  copy: src={{ item }} dest=/etc/systemd/system/{{ item }}
-  with_items: "{{ phab_services }}"
-  notify:
-    - reload systemd
-    - restart phabricator-daemon
-
 - name: install services
   become: yes
-  command: systemctl enable {{ item }} creates=/etc/systemd/system/multi-user.target.wants/{{ item }}
-  with_items: "{{ phab_services }}"
+  systemd_unit: src=phabricator-daemon.service
 
 - name: php-fpm overrides directory
   become: yes
