@@ -34,9 +34,11 @@ ProtectHome=true
 PrivateDevices=true
 PrivateTmp=true
 
-# shouldn't need to elevate
-NoNewPrivileges=true
+# can't be "NoNewPrivileges=true" as that breaks sendmail/postfix, due to setgid postdrop(1).
 CapabilityBoundingSet=
+
+# setting this causes us to fail to start, which is a bug(?) in systemd
+#SecureBits=keep-caps-locked no-setuid-fixup no-setuid-fixup-locked noroot noroot-locked
 
 # shouldn't need to launch many tasks
 TasksMax=10
