@@ -1,4 +1,9 @@
 - hosts:
+    - base
+  roles:
+    - base
+
+- hosts:
     - phab
   roles:
     - phab

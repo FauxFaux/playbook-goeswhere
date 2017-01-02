@@ -37,5 +37,4 @@ PrivateTmp=true
 NoNewPrivileges=true
 CapabilityBoundingSet=
 
-# shouldn't need to launch many tasks
-TasksMax=10
+TasksMax=40

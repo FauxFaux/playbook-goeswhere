@@ -8,6 +8,7 @@
   become: yes
   user: name={{ item }}
   with_items:
+    # TODO
     - can-ssh
 
 - name: copy binaries
@@ -19,4 +20,4 @@
   with_items:
     - node_exporter
 
-- include: node-exporter.yml
+- include: exporters.yml

@@ -9,7 +9,7 @@ def hosts():
         '_meta': {'hostvars': {}},
     }
 
-    for role in ['phab', 'prom']:
+    for role in ['base', 'phab', 'prom']:
         ret[role] = {'hosts': ['blind.goeswhere.com']}
 
     return ret
