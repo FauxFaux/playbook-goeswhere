@@ -46,6 +46,7 @@
     - blackbox.yml
     - prometheus.yml
     - alertmanager.yml
+  tags: config
 
 
 - name: copy prometheus server unit

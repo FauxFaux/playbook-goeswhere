@@ -40,3 +40,21 @@ scrape_configs:
         target_label: node
         regex: ".*"
         replacement: "{{ inventory_hostname_short }}"
+
+  - job_name: node_exporter
+
+    metrics_path: /prom-proxy/9100/metrics
+
+    static_configs:
+      - targets:
+{% for host in groups['base'] | sort %}
+        - prom-{{ host }}
+{% endfor %}
+
+    relabel_configs:
+      # generate a nice instance of "foo.goeswhere"
+      - action: replace
+        source_labels: ['__address__']
+        target_label: instance
+        regex: "prom-([a-z0-9-]+\\.[a-z0-9-]+)\\.\\w+(:\\d+)?"
+        replacement: "${1}"
