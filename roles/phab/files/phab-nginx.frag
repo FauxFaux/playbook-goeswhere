@@ -32,3 +32,11 @@ location /index.php {
 
   fastcgi_param  REMOTE_ADDR        $remote_addr;
 }
+
+location = /ws/ {
+  proxy_pass http://websocket_pool;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection $connection_upgrade;
+  proxy_read_timeout 604800s; # 604800s = 1 week
+}
