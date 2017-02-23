@@ -1,0 +1,160 @@
+#!/usr/bin/env python
+import json
+import os
+import subprocess
+import sys
+import tempfile
+
+import yaml
+
+if sys.version_info[0] < 3:
+    from urlparse import urlparse
+else:
+    import urllib.parse
+    from urllib.parse import urlparse
+
+
+def pick_mode(module, user, repo):
+    file = module.params['to_gpg_dir']
+    if file:
+        class GpgDir:
+            def __init__(self):
+                if not os.path.isdir(file):
+                    if module.check_mode:
+                        module.exit_json(changed=True)
+
+                    os.makedirs(file)
+
+                target_name = '{}_ubuntu_{}.gpg'.format(user, repo)
+                self.target_path = os.path.join(file, target_name)
+                self.exists = os.path.isfile(self.target_path)
+                self.temporary_file_dir = file
+
+            def store_result(self, temporary_keyring):
+                os.rename(temporary_keyring, self.target_path)
+
+        return GpgDir()
+
+    file = module.params['to_yaml_file']
+    if file:
+        dirname = os.path.dirname(file)
+
+        class literal(str):
+            pass
+
+        yaml.add_representer(literal,
+                             lambda dumper, data: dumper.represent_scalar(
+                                 'tag:yaml.org,2002:str', data, style='|'))
+
+        class YamlFile:
+            def __init__(self):
+                if not os.path.isdir(dirname):
+                    if module.check_mode:
+                        module.exit_json(changed=True)
+
+                    os.makedirs(dirname)
+
+                if not os.path.isfile(file):
+                    if module.check_mode:
+                        module.exit_json(changed=True)
+
+                    # try and create the file
+                    open(file, 'a').close()
+
+                with open(file) as f:
+                    file_content = yaml.safe_load(f)
+
+                if not file_content:
+                    file_content = {}
+                else:
+                    file_content = file_content.get('apt_ppa_keys', {})
+
+                self.content = {}
+
+                for file_user, repos in file_content.items():
+                    self.content[file_user] = {}
+                    for file_repo, file_data in repos.items():
+                        self.content[file_user][file_repo] = literal(file_data)
+
+                if not user in self.content:
+                    self.content[user] = {}
+
+                self.exists = repo in self.content[user]
+                self.temporary_file_dir = None
+
+            def store_result(self, temporary_keyring):
+                armoured = subprocess.check_output([
+                    'gpg',
+                    '--export', '--armour',
+                    '--no-default-keyring',
+                    '--keyring', temporary_keyring]).decode('utf-8')
+                '\n'.join(x.strip() for x in armoured.split('\n'))
+
+                self.content[user][repo] = literal(armoured)
+
+                with open(file, 'w') as f:
+                    yaml.dump({'apt_ppa_keys': self.content}, f)
+
+        return YamlFile()
+
+    module.fail_json(msg='to_gpg_dir or to_yaml_file must be provided')
+
+
+def run_module():
+    module = AnsibleModule(
+        argument_spec=dict(
+            ppa=dict(required=True, type='str'),
+            to_gpg_dir=dict(type='path'),
+            to_yaml_file=dict(type='path'),
+        ),
+        supports_check_mode=True
+    )
+
+    ppa = module.params['ppa']
+
+    parsed = urlparse(ppa)  # type: urllib.parse.ParseResult
+    if 'ppa' != parsed.scheme:
+        module.fail_json(msg='unsupported scheme: "{}"'.format(parsed.scheme))
+
+    user, repo = parsed.path.split('/', 1)
+
+    dest = pick_mode(module, user, repo)
+
+    if dest.exists:
+        module.exit_json(changed=False)
+
+    if module.check_mode:
+        module.exit_json(changed=True)
+
+    api_url = 'https://launchpad.net/api/1.0/~{}/+archive/{}'.format(user, repo)
+    headers = {'Accept': 'application/json', 'Accept-Encoding': 'utf-8'}
+    body, status = fetch_url(module, api_url, headers=headers)
+    if 200 != status['status']:
+        module.fail_json(msg="couldn't talk to launchpad api: {}".format(status))
+
+    info = json.loads(body.read(), encoding=body.headers.get('Content-Encoding', 'utf-8'))
+
+    key_id = info['signing_key_fingerprint']
+
+    dest.store_result(download_key(key_id, dest.temporary_file_dir))
+
+    module.exit_json(changed=True)
+
+
+def download_key(key_id, temporary_file_dir = None):
+    temp = tempfile.NamedTemporaryFile(delete=False, dir=temporary_file_dir)
+    temp.close()
+    subprocess.check_call([
+        'gpg',
+        '--keyserver', 'hkp://keyserver.ubuntu.com:80',
+        '--keyring', temp.name,
+        '--no-default-keyring',
+        '--recv-keys', key_id])
+    return temp.name
+
+
+# import module snippets
+from ansible.module_utils.basic import *
+from ansible.module_utils.urls import *
+
+run_module()
