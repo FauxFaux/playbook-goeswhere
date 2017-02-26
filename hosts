@@ -1,23 +1,67 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
+import collections
 import json
+from typing import Any, Dict, Set, Tuple
 
 
-def hosts():
+class Host(str):
+    pass
 
-    ret = {
-        '_meta': {'hostvars': {}},
-    }
+
+Vars = Dict[str, Any]
+HostVars = Dict[Host, Vars]
+
+
+class Role:
+    def __init__(self):
+        self.hosts = set()  # type: Set[Host]
+        self.vars = {}  # type: Vars
+
+    def to_json(self):
+        return {
+            'hosts': sorted(self.hosts),
+            'vars': self.vars
+        }
+
+
+Roles = Dict[str, Role]
+
+
+def gw(name: str) -> Host:
+    return Host('{}.goeswhere.com'.format(name))
+
+
+def hosts() -> Tuple[HostVars, Roles]:
+    hostvars = {}  # type: HostVars
+    roles = collections.defaultdict(Role)  # type: Roles
 
     for role in ['base', 'phab', 'prom']:
-        ret[role] = {'hosts': ['blind.goeswhere.com']}
+        roles[role].hosts.add(gw('blind'))
+
+    roles['base'].hosts.update({gw('urika'), gw('astoria')})
+
+    return hostvars, roles
+
+
+def ansible() -> Dict[str, Any]:
+    hostvars, roles = hosts()
+    assert '_meta' not in roles
+
+    hvars = {}
+    for name, vars in hostvars.items():
+        hvars[str(name)] = vars
+
+    ret = {'_meta': {'hostvars': hvars}}
+    for name, role in roles.items():
+        ret[name] = role.to_json()
 
     return ret
 
 
 def main():
     import sys
-    json.dump(hosts(), sys.stdout)
+    json.dump(ansible(), sys.stdout, sort_keys=True, indent=' ')
 
 
 if '__main__' == __name__:
