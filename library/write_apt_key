@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+import os
+
+import subprocess
+import tempfile
+
+
+def main():
+    module = AnsibleModule(
+        argument_spec=dict(
+            contents=dict(required=True, type='str'),
+            name=dict(required=True, type='str'),
+        ),
+        supports_check_mode=True
+    )
+
+    contents = module.params['contents']
+    name = module.params['name']
+
+    dest = '/etc/apt/trusted.gpg.d/{}.gpg'.format(name)
+
+    if os.path.isfile(dest):
+        module.exit_json(changed=False)
+
+    if module.check_mode:
+        module.exit_json(changed=True)
+
+    tmp = tempfile.mktemp(dir=os.path.dirname(dest), prefix='.', suffix='.tmp')
+    try:
+        proc = subprocess.Popen(['gpg', '--no-default-keyring', '--import', '--keyring', tmp],
+                                universal_newlines=True,
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        _, gpg_err = proc.communicate(contents)
+        if 0 != proc.wait():
+            raise Exception('gpg failed: ' + gpg_err)
+        os.rename(tmp, dest)
+    except:
+        if os.path.isfile(tmp):
+            os.unlink(tmp)
+        raise
+
+    module.exit_json(changed=True)
+
+
+# import module snippets
+from ansible.module_utils.basic import *
+
+main()
