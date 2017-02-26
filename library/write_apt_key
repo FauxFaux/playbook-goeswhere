@@ -25,19 +25,15 @@ def main():
     if module.check_mode:
         module.exit_json(changed=True)
 
-    tmp = tempfile.mktemp(dir=os.path.dirname(dest), prefix='.', suffix='.tmp')
-    try:
-        proc = subprocess.Popen(['gpg', '--no-default-keyring', '--import', '--keyring', tmp],
+    with tempfile.NamedTemporaryFile(suffix='.gpg') as tmp:
+        proc = subprocess.Popen(['gpg', '--no-default-keyring', '--import', '--keyring', tmp.name],
                                 universal_newlines=True,
                                 stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         _, gpg_err = proc.communicate(contents)
         if 0 != proc.wait():
-            raise Exception('gpg failed: ' + gpg_err)
-        os.rename(tmp, dest)
-    except:
-        if os.path.isfile(tmp):
-            os.unlink(tmp)
-        raise
+            raise Exception('gpg failed: {}'.format(gpg_err))
+
+        subprocess.check_call(['gpg', '--no-default-keyring', '--export', '--keyring', tmp.name, '--output', dest])
 
     module.exit_json(changed=True)
 
