@@ -4,6 +4,11 @@
     - base
 
 - hosts:
+    - owned
+  roles:
+    - owned
+
+- hosts:
     - phab
   roles:
     - phab

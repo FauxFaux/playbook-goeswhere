@@ -1,0 +1,3 @@
+- name: setup apt keys
+  become: yes
+  write_apt_keys: spec={{apt_keys}} exclusive=yes remove=yes

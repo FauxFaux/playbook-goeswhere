@@ -4,6 +4,8 @@ import collections
 import json
 from typing import Any, Dict, Set, Tuple
 
+import yaml
+
 
 class Host(str):
     pass
@@ -40,6 +42,45 @@ def hosts() -> Tuple[HostVars, Roles]:
         roles[role].hosts.add(gw('blind'))
 
     roles['base'].hosts.update({gw('urika'), gw('astoria')})
+    roles['owned'].hosts.update({gw('urika'), gw('blind'), gw('astoria')})
+
+    with open('infra_spec/data/apt_ppa_keys.yml') as f:
+        apt_ppa_keys = yaml.safe_load(f)['apt_ppa_keys']
+
+    with open('infra_spec/data/apt_repositories.yml') as f:
+        apt_repositories = yaml.safe_load(f)['apt_repositories']
+
+    repos = {
+        gw('astoria'): {
+            'google/google-chrome',
+            'google/google-musicmanager',
+            'spotify',
+            'steam',
+            'ppa:ansible/ansible',
+            'ppa:faux/jailkit',
+            'ppa:ubuntu-lxc/lxd-stable',
+        },
+        gw('urika'): {
+        },
+        gw('blind'): {
+            'grafana',
+            'ppa:certbot/certbot',
+            'ppa:faux/jailkit',
+        }
+    }
+
+    for host, reps in repos.items():
+        apt_keys = {}
+        for rep in reps:  # type: str
+            if rep.startswith('ppa:'):
+                major, minor = rep[len('ppa:'):].split('/', 1)
+                apt_keys['{}_ubuntu_{}'.format(major, minor)] = apt_ppa_keys[major][minor]
+            elif '/' in rep:
+                major, minor = rep.split('/', 1)
+                apt_keys[major] = apt_repositories[major]['key']
+            else:
+                apt_keys[rep] = apt_repositories[rep]['key']
+        hostvars[host] = {'apt_keys': apt_keys}
 
     return hostvars, roles
 

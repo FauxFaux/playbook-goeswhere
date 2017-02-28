@@ -1,0 +1,95 @@
+#!/usr/bin/env python3
+import datetime
+import glob
+import os
+
+import subprocess
+import tempfile
+
+DISABLED_PREFIX = '.disabled-'
+
+TRUSTED_D = '/etc/apt/trusted.gpg.d/'
+
+
+def main():
+    module = AnsibleModule(
+        argument_spec=dict(
+            spec=dict(required=True, type='dict'),
+            exclusive=dict(type='bool'),
+            remove=dict(type='bool'),
+        ),
+        supports_check_mode=False
+    )
+
+    spec = module.params['spec']
+
+    template = TRUSTED_D + '{}.gpg'
+
+    allowed = set()
+
+    changed = False
+    for name, keys in spec.items():
+        dest = template.format(name)
+        allowed.add(dest)
+        if not os.path.exists(dest):
+            write_key_to(keys, dest)
+            changed = True
+
+    packaged_keys = set(find_packaged_keys())
+
+    currently_have = set()
+
+    for entry in os.listdir(TRUSTED_D):
+        item = os.path.join(TRUSTED_D, entry)
+        if item in allowed or item in packaged_keys:
+            continue
+        if entry.startswith(DISABLED_PREFIX) and os.path.isdir(item):
+            continue
+
+        currently_have.add(item)
+
+    global_db_exists = os.path.isfile('/etc/apt/trusted.gpg')
+    if currently_have or global_db_exists:
+        if module.params['exclusive']:
+            if module.params['remove']:
+                changed = True
+                tmp = tempfile.mkdtemp(
+                    dir=TRUSTED_D,
+                    prefix=DISABLED_PREFIX,
+                    suffix=datetime.datetime.utcnow().isoformat())
+                for key in currently_have:
+                    os.rename(key, os.path.join(tmp, os.path.basename(key)))
+                if global_db_exists:
+                    os.rename('/etc/apt/trusted.gpg', os.path.join(tmp, 'trusted.gpg'))
+            else:
+                module.fail_json(msg='things are left: {}'.format(currently_have))
+
+    module.exit_json(changed=changed)
+
+
+def find_packaged_keys():
+    # there are other packages, like steam-launcher, which have keys in.
+    # Do I care? Probably not.
+    for keyring_package in glob.glob('/var/lib/dpkg/info/*keyring*.list'):
+        with open(keyring_package) as f:
+            for line in f:
+                if line.startswith(TRUSTED_D):
+                    yield line.strip()
+
+
+def write_key_to(contents, dest):
+    with tempfile.NamedTemporaryFile(suffix='.gpg') as tmp:
+        proc = subprocess.Popen(['gpg', '--no-default-keyring', '--import', '--keyring', tmp.name],
+                                universal_newlines=True,
+                                stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        _, gpg_err = proc.communicate(contents)
+        if 0 != proc.wait():
+            raise Exception('gpg failed: {}'.format(gpg_err))
+
+        subprocess.check_call(['gpg', '--no-default-keyring', '--export', '--keyring', tmp.name, '--output', dest])
+
+
+# import module snippets
+from ansible.module_utils.basic import *
+
+main()
