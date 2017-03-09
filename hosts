@@ -58,6 +58,7 @@ def hosts() -> Tuple[HostVars, Roles]:
             'steam',
             'ppa:ansible/ansible',
             'ppa:faux/jailkit',
+            'ppa:graphics-drivers/ppa',
             'ppa:ubuntu-lxc/lxd-stable',
         },
         gw('urika'): {
