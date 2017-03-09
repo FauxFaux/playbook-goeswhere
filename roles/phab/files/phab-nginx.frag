@@ -1,4 +1,4 @@
-root /opt/phabricator/phabricator/webroot;
+root: /opt/phabricator/phabricator/webroot
 
 client_max_body_size 10m;
 
