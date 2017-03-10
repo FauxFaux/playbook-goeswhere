@@ -22,8 +22,11 @@
 - name: phabricator user
   become: yes
   user:
-    name=phab
+    name={{item}}
     system=yes
+  with_items:
+    - phab
+    - git
 
 - name: phabricator install directory
   become: yes
@@ -67,13 +70,6 @@
   copy:
     src=aphlict.json
     dest=/opt/phabricator/phabricator/conf/aphlict/aphlict.json
-
-- name: install services
-  become: yes
-  systemd_unit: src={{item}}
-  with_items:
-    - phabricator-daemon.service
-    - phabricator-aphlict-daemon.service
 
 - name: php-fpm overrides directory
   become: yes
@@ -130,3 +126,25 @@
     owner=phab
     group=phab
     mode="u=rwX,g=rX,o="
+
+- name: libexec
+  become: yes
+  file:
+    name=/usr/libexec
+    state=directory
+
+- name: copy hook
+  become: yes
+  copy: src=phabricator-ssh-hook.sh dest=/usr/libexec/phabricator-ssh-hook.sh mode=a+rx
+
+- name: copy ssh config
+  become: yes
+  copy: src=sshd_config.phabricator dest=/etc/ssh/sshd_config.phabricator
+
+- name: install services
+  become: yes
+  systemd_unit: src={{item}}
+  with_items:
+    - phabricator-daemon.service
+    - phabricator-aphlict-daemon.service
+    - sshd-phabricator.service
