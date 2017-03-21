@@ -52,19 +52,25 @@ def hosts() -> Tuple[HostVars, Roles]:
 
     repos = {
         gw('astoria'): {
+            'ubuntu',
             'google/google-chrome',
             'google/google-musicmanager',
             'spotify',
             'steam',
+            'syncthing',
             'ppa:ansible/ansible',
             'ppa:faux/jailkit',
             'ppa:graphics-drivers/ppa',
             'ppa:ubuntu-lxc/lxd-stable',
         },
         gw('urika'): {
+            'ubuntu',
+            'syncthing',
         },
         gw('blind'): {
+            'ubuntu',
             'grafana',
+            'syncthing',
             'ppa:certbot/certbot',
             'ppa:faux/jailkit',
         }
