@@ -53,6 +53,7 @@ def hosts() -> Tuple[HostVars, Roles]:
     repos = {
         gw('astoria'): {
             'ubuntu',
+            'ubuntu_debug',
             'google/google-chrome',
             'google/google-musicmanager',
             'spotify',
@@ -65,10 +66,12 @@ def hosts() -> Tuple[HostVars, Roles]:
         },
         gw('urika'): {
             'ubuntu',
+            'ubuntu_debug',
             'syncthing',
         },
         gw('blind'): {
             'ubuntu',
+            'ubuntu_debug',
             'grafana',
             'syncthing',
             'ppa:certbot/certbot',
