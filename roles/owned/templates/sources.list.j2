@@ -1,0 +1,13 @@
+deb     {{ ubuntu_mirror }}                  {{ ubuntu_release }}          main universe multiverse restricted
+deb-src {{ ubuntu_mirror }}                  {{ ubuntu_release }}          main universe multiverse restricted
+
+deb     {{ ubuntu_mirror }}                  {{ ubuntu_release }}-updates  main universe multiverse restricted
+deb-src {{ ubuntu_mirror }}                  {{ ubuntu_release }}-updates  main universe multiverse restricted
+
+deb     http://security.ubuntu.com/ubuntu    {{ ubuntu_release }}-security main universe multiverse restricted
+deb-src http://security.ubuntu.com/ubuntu    {{ ubuntu_release }}-security main universe multiverse restricted
+
+deb     http://ddebs.ubuntu.com/ubuntu/      {{ ubuntu_release }}          main universe multiverse restricted
+
+deb     http://archive.canonical.com/ubuntu  {{ ubuntu_release }}          partner
+deb-src http://archive.canonical.com/ubuntu  {{ ubuntu_release }}          partner

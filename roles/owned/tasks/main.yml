@@ -1,3 +1,14 @@
 - name: setup apt keys
   become: yes
   write_apt_keys: spec={{apt_keys}} exclusive=yes remove=yes
+
+- name: setup apt sources.list
+  template:
+    src=sources.list.j2
+    dest=/etc/apt/sources.list
+    backup=yes
+  become: yes
+
+- name: setup apt sources.d
+  become: yes
+  write_apt_sources: spec={{apt_sources}} exclusive=yes remove=yes

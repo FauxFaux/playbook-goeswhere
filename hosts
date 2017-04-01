@@ -2,9 +2,9 @@
 
 import collections
 import json
-from typing import Any, Dict, Set, Tuple
 
 import yaml
+from typing import Any, Dict, Set, Tuple
 
 
 class Host(str):
@@ -76,18 +76,47 @@ def hosts() -> Tuple[HostVars, Roles]:
         }
     }
 
+    ubuntu_uk = 'http://gb.archive.ubuntu.com/ubuntu/'
+
+    ubuntu_mirror = {
+        gw('astoria'): ubuntu_uk,
+        gw('urika'): ubuntu_uk,
+        gw('blind'): 'http://ubuntu.mirrors.ovh.net/ftp.ubuntu.com/ubuntu/',
+    }
+
+    ubuntu_release = {
+        gw('astoria'): 'zesty',
+        gw('urika'): 'xenial',
+        gw('blind'): 'xenial',
+    }
+
     for host, reps in repos.items():
         apt_keys = {}
+        apt_sources = {}
         for rep in reps:  # type: str
             if rep.startswith('ppa:'):
                 major, minor = rep[len('ppa:'):].split('/', 1)
                 apt_keys['{}_ubuntu_{}'.format(major, minor)] = apt_ppa_keys[major][minor]
+                apt_sources['{}-ubuntu-{}-{}'.format(major, minor, ubuntu_release[host])] = \
+                    "deb     http://ppa.launchpad.net/{0}/{1}/ubuntu {2} main\n" \
+                    "deb-src http://ppa.launchpad.net/{0}/{1}/ubuntu {2} main\n" \
+                        .format(major, minor, ubuntu_release[host])
             elif '/' in rep:
                 major, minor = rep.split('/', 1)
                 apt_keys[major] = apt_repositories[major]['key']
+                apt_sources[minor] = apt_repositories[major]['repo'][minor]
             else:
                 apt_keys[rep] = apt_repositories[rep]['key']
-        hostvars[host] = {'apt_keys': apt_keys}
+                repo = apt_repositories[rep]['repo']
+                if repo.strip():
+                    apt_sources[rep] = repo
+
+        hostvars[host] = {
+            'apt_keys': apt_keys,
+            'apt_sources': apt_sources,
+            'ubuntu_release': ubuntu_release[host],
+            'ubuntu_mirror': ubuntu_mirror[host],
+        }
 
     return hostvars, roles
 
