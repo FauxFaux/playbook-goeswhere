@@ -54,6 +54,7 @@ def hosts() -> Tuple[HostVars, Roles]:
         gw('astoria'): {
             'ubuntu',
             'ubuntu_debug',
+            'docker',
             'google/google-chrome',
             'google/google-musicmanager',
             'spotify',
