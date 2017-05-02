@@ -69,6 +69,7 @@ def hosts() -> Tuple[HostVars, Roles]:
             'ubuntu',
             'ubuntu_debug',
             'syncthing',
+            'ppa:jonathonf/vim',
         },
         gw('blind'): {
             'ubuntu',
@@ -77,6 +78,7 @@ def hosts() -> Tuple[HostVars, Roles]:
             'syncthing',
             'ppa:certbot/certbot',
             'ppa:faux/jailkit',
+            'ppa:jonathonf/vim',
         },
         gw('ptang'): {
             'ubuntu',
@@ -84,6 +86,7 @@ def hosts() -> Tuple[HostVars, Roles]:
             'grafana',
             'influx',
             'postgres',
+            'ppa:jonathonf/vim',
         }
     }
 

@@ -119,6 +119,36 @@ apt_ppa_keys:
       K18Z3EYaGv8JhYO5KF4o1aeb/d5f7pVA52GCkSd3wwIK39PW
       =QFVe
       -----END PGP PUBLIC KEY BLOCK-----
+  jonathonf:
+    vim: |
+      -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+      mQINBFSs/wABEAC2gPjfZeJLl9+KsSG2GvMMnPHJ/rpuFPq7ODPtRxuWscEs1VtN
+      BcHuy6spxm2Iss2611Jp29KU/2J2d1KwmCaBFuwOwmZGioQ+U6isa2XQnOdYAAV3
+      3b7FJKtbb8TugupdmuHkSnTYPTQRl1CEOz3sdkS7dizPitZYCK4w1xosJq/eaYrh
+      0F2POb+2bjlqwHPyTxf6za1vPk5Gpo2OGhJ6ITeS2YG15MRore+0j00RZa5kNPOX
+      7QBFtoFl8hcHCNw09rmnJj1ODZ9rLgPI0yiikf0J5ivLKjCoiJJlzw9AE8HslkX0
+      a4cYAC0cCFnKQMoX1ja3avtuw4rd8yDwkZofez8iPNYUYJOIQrh1jrjLWaY8VgXy
+      FRYJiJAeKz7herI/aP+mMW6Tw5TVoDp7sGqxCYwTSLsZTTEvfq+kCtKELfuTFrLE
+      Ayzx9X2CWqvM086bAt07B3SWQJgs8VdgWom0zKhk1AQiMDkgjnoQoX9vMy8agV4g
+      kOxsJAp7Y7hPrAn5swd4lRbbdvHofWlZiQ/0Jnw0kP28+MX0Q8uhOHH9ynZiFLu+
+      AzJVlya46nxNT8P+rrlEcCJxF2XlgRrHqJdyFbSGMGe7ZmoermvDdwVMaVdvETYA
+      5a9gyT42aFbkfTam9V7mLKYCtj02fsWQA/LqBqkZXccv6v+boCgKhzR+VwARAQAB
+      tB5MYXVuY2hwYWQgUFBBIGZvciBKIEZlcm55aG91Z2iJAjgEEwECACIFAlSs/wAC
+      GwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEIz2OtPwb8ZZJBoP/3e6Phxo
+      x3BXOv+Jv4EQ2Ns25F+jIFYyRtobGE+Tx/lmeOEwfQptp2xqJ4upWn9qVR8SG0qf
+      pG2TmcxiufxHq7n0T+ul3683RPL2CvfeCHqSzw8iO9iAQ3d6m0jsTrsS4mGcpb0x
+      9a21wIL31R6TMp8vpwsUvTeCY9/LD2uruLn3dDt8fZM0nBu3s93GhiQwsHjFVupz
+      ebJymw5+yJRmyIz4hoJrBNtxgvrl8sY2l5ze96/U4dUuRmd3NhPW5x8K3Eb2ohMe
+      zrluf2c76/aLGWd/curkBgGS2a9gYIXKsNpp6NvOZDzOt2e6V4zHHACtSCvL6Voa
+      0LPkC2LJENl6bUfARTofmmkcGo8s3mwKakTFTADSUI2dCcCJ6flbpMwt31ZEmb+b
+      4GI+oVgqfsIVCwAMgCeu+97e7JnMEAUaRp4CX350ww6DtG/CoZLinX+GTbxjUhIK
+      izC0gBlxac8h+Iw//0AT/MjUGbEUQQogn1BKPh56NhL60VFAz1ngew3kCUyn3F1b
+      GLSysLK9d813dxtiQEjnSeAa6onR0pGHSD4nFjQAKbQcqyuVSyV9xWOyLShx3ExT
+      Do1eNe8P1PPekh99iaBU9IAtUJmJAHexhPXvoNcYtQwLPlJlkXYtqd5/lll+SeAN
+      tNM8R2lljdCtbCCm7A0wAKAeiZ1RJHIdeExb
+      =v6Oo
+      -----END PGP PUBLIC KEY BLOCK-----
   ubuntu-lxc:
     lxd-stable: |
       -----BEGIN PGP PUBLIC KEY BLOCK-----
