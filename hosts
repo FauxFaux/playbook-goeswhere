@@ -41,8 +41,8 @@ def hosts() -> Tuple[HostVars, Roles]:
     for role in ['base', 'phab', 'prom']:
         roles[role].hosts.add(gw('blind'))
 
-    roles['base'].hosts.update({gw('urika'), gw('astoria')})
-    roles['owned'].hosts.update({gw('urika'), gw('blind'), gw('astoria')})
+    roles['base'].hosts.update({gw('urika'), gw('astoria'), gw('ptang'),})
+    roles['owned'].hosts.update({gw('urika'), gw('blind'), gw('astoria'), gw('ptang'),})
 
     with open('infra_spec/data/apt_ppa_keys.yml') as f:
         apt_ppa_keys = yaml.safe_load(f)['apt_ppa_keys']
@@ -77,6 +77,13 @@ def hosts() -> Tuple[HostVars, Roles]:
             'syncthing',
             'ppa:certbot/certbot',
             'ppa:faux/jailkit',
+        },
+        gw('ptang'): {
+            'ubuntu',
+            'ubuntu_debug',
+            'grafana',
+            'influx',
+            'postgres',
         }
     }
 
@@ -86,12 +93,14 @@ def hosts() -> Tuple[HostVars, Roles]:
         gw('astoria'): ubuntu_uk,
         gw('urika'): ubuntu_uk,
         gw('blind'): 'http://ubuntu.mirrors.ovh.net/ftp.ubuntu.com/ubuntu/',
+        gw('ptang'): 'http://ubuntu.mirrors.ovh.net/ftp.ubuntu.com/ubuntu/',
     }
 
     ubuntu_release = {
         gw('astoria'): 'zesty',
         gw('urika'): 'xenial',
         gw('blind'): 'xenial',
+        gw('ptang'): 'xenial',
     }
 
     for host, reps in repos.items():

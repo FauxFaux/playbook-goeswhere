@@ -11,4 +11,21 @@
 
 - name: setup apt sources.d
   become: yes
-  write_apt_sources: spec={{apt_sources}} exclusive=yes remove=yes
+  write_apt_sources:
+    spec={{apt_sources}}
+    exclusive=yes
+    remove=yes
+
+- name: packages
+  become: yes
+  apt:
+    name={{item}}
+    state=installed
+    install_recommends=no
+  with_items:
+    - apt-transport-https
+    - connect-proxy
+    - git
+    - python-apt
+    - tmux
+    - zsh
