@@ -43,6 +43,7 @@ def hosts() -> Tuple[HostVars, Roles]:
 
     roles['base'].hosts.update({gw('urika'), gw('astoria'), gw('ptang'),})
     roles['owned'].hosts.update({gw('urika'), gw('blind'), gw('astoria'), gw('ptang'),})
+    roles['influx'].hosts.update({gw('ptang'),})
 
     with open('infra_spec/data/apt_ppa_keys.yml') as f:
         apt_ppa_keys = yaml.safe_load(f)['apt_ppa_keys']
@@ -86,6 +87,7 @@ def hosts() -> Tuple[HostVars, Roles]:
             'grafana',
             'influx',
             'postgres',
+            'ppa:certbot/certbot',
             'ppa:jonathonf/vim',
         }
     }

@@ -4,6 +4,11 @@
     - base
 
 - hosts:
+    - influx
+  roles:
+    - influx
+
+- hosts:
     - owned
   roles:
     - owned

@@ -1,0 +1,19 @@
+- name: install packages
+  become: yes
+  apt:
+    name={{ item }}
+    state=present
+    install_recommends=no
+  with_items:
+    - certbot
+    - grafana
+    - influxdb
+    - nginx
+    - postgresql-9.6
+
+# TODO: break out nginx role, clone nginx-compiler etc.
+- name: generate nginx dhparam (this takes a few minutes..)
+  become: yes
+  command: openssl dhparam -out /etc/nginx/dhparam.pem 2048
+  args:
+    creates: /etc/nginx/dhparam.pem
