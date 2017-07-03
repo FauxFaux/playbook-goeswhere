@@ -58,6 +58,8 @@ def hosts() -> Tuple[HostVars, Roles]:
             'docker',
             'google/google-chrome',
             'google/google-musicmanager',
+            'google/google-talkplugin',
+            'skype',
             'spotify',
             'steam',
             'syncthing',
