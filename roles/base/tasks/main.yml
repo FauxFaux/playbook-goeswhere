@@ -6,7 +6,7 @@
 
 - name: custom groups
   become: yes
-  user: name={{ item }}
+  group: name={{ item }}
   with_items:
     # TODO
     - can-ssh
