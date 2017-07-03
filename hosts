@@ -84,9 +84,10 @@ def hosts() -> Tuple[HostVars, Roles]:
         gw('ptang'): {
             'ubuntu',
             'ubuntu_debug',
+            'docker',
+            'google/google-chrome',
             'grafana',
             'influx',
-            'postgres',
             'ppa:certbot/certbot',
             'ppa:jonathonf/vim',
         }
@@ -105,7 +106,7 @@ def hosts() -> Tuple[HostVars, Roles]:
         gw('astoria'): 'zesty',
         gw('urika'): 'xenial',
         gw('blind'): 'xenial',
-        gw('ptang'): 'xenial',
+        gw('ptang'): 'zesty',
     }
 
     for host, reps in repos.items():

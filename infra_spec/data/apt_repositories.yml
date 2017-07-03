@@ -234,7 +234,7 @@ apt_repositories:
       -----END PGP PUBLIC KEY BLOCK-----
   influx:
     repo: |
-      deb https://repos.influxdata.com/ubuntu xenial stable
+      deb https://repos.influxdata.com/ubuntu yakkety stable
     key: |
       -----BEGIN PGP PUBLIC KEY BLOCK-----
 
