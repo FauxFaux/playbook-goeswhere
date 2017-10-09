@@ -82,16 +82,6 @@ def hosts() -> Tuple[HostVars, Roles]:
             'ppa:faux/jailkit',
             'ppa:jonathonf/vim',
         },
-        gw('ptang'): {
-            'ubuntu',
-            'ubuntu_debug',
-            'docker',
-            'google/google-chrome',
-            'grafana',
-            'influx',
-            'ppa:certbot/certbot',
-            'ppa:jonathonf/vim',
-        }
     }
 
     ubuntu_uk = 'http://gb.archive.ubuntu.com/ubuntu/'
@@ -100,14 +90,12 @@ def hosts() -> Tuple[HostVars, Roles]:
         gw('astoria'): ubuntu_uk,
         gw('urika'): ubuntu_uk,
         gw('blind'): 'http://ubuntu.mirrors.ovh.net/ftp.ubuntu.com/ubuntu/',
-        gw('ptang'): 'http://ubuntu.mirrors.ovh.net/ftp.ubuntu.com/ubuntu/',
     }
 
     ubuntu_release = {
-        gw('astoria'): 'zesty',
+        gw('astoria'): 'artful',
         gw('urika'): 'xenial',
         gw('blind'): 'xenial',
-        gw('ptang'): 'zesty',
     }
 
     for host, reps in repos.items():
