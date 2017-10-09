@@ -30,6 +30,7 @@
     - procps              # pwdx, pkill, free, etc.
     - psmisc              # killall
     - software-properties-common # fixes ppas
+    - mcelog              # ensure hardware errors end up in syslog
     # ansible/setup helpers:
     - acl                 # for the ansible setfacl stuff
     - git
