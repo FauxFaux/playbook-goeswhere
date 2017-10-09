@@ -31,8 +31,7 @@ def main():
     for name, keys in spec.items():
         dest = template.format(name)
         allowed.add(dest)
-        if not os.path.exists(dest):
-            write_to(keys, dest)
+        if not os.path.exists(dest) or write_to(keys, dest):
             changed = True
 
     currently_have = set()
@@ -63,12 +62,17 @@ def main():
 
 
 def write_to(contents, dest):
+    with open(dest) as f:
+        if contents == f.read():
+            return False
+
     (fd, name) = tempfile.mkstemp(suffix='.tmp', prefix=".", dir=os.path.dirname(dest), text=True)
     f = os.fdopen(fd, "w")
     f.write(contents)
     f.close()
     os.rename(name, dest)
     os.chmod(dest, 0o644)
+    return True
 
 
 # import module snippets
