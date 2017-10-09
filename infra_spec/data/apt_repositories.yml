@@ -443,7 +443,7 @@ apt_repositories:
 
   steam:
     repo: |
-      deb http://repo.steampowered.com/steam/ precise main
+      deb http://repo.steampowered.com/steam/ precise steam
     key: |
       -----BEGIN PGP PUBLIC KEY BLOCK-----
 
