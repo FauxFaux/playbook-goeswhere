@@ -65,7 +65,6 @@ def hosts() -> Tuple[HostVars, Roles]:
             'syncthing',
             'ppa:ansible/ansible',
             'ppa:faux/jailkit',
-            'ppa:graphics-drivers/ppa',
         },
         gw('urika'): {
             'ubuntu',
