@@ -1,7 +1,7 @@
 apt_repositories:
   docker:
     repo: |
-      deb [arch=amd64] https://download.docker.com/linux/ubuntu yakkety stable
+      deb [arch=amd64] https://download.docker.com/linux/ubuntu zesty stable
     key: |
       -----BEGIN PGP PUBLIC KEY BLOCK-----
 
