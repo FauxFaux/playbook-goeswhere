@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import datetime
 import glob
+import json
 import os
 
 import subprocess
@@ -31,7 +32,7 @@ def main():
     for name, keys in spec.items():
         dest = template.format(name)
         allowed.add(dest)
-        if not os.path.exists(dest) or write_to(keys, dest):
+        if write_to(keys, dest):
             changed = True
 
     currently_have = set()
@@ -62,9 +63,13 @@ def main():
 
 
 def write_to(contents, dest):
-    with open(dest) as f:
-        if contents == f.read():
-            return False
+    try:
+        with open(dest) as f:
+            if contents == f.read():
+                return False
+    except IOError as _:
+        # just gonna blow up later
+        pass
 
     (fd, name) = tempfile.mkstemp(suffix='.tmp', prefix=".", dir=os.path.dirname(dest), text=True)
     f = os.fdopen(fd, "w")
