@@ -291,7 +291,7 @@ apt_repositories:
       vqIHrEqk446nGPDqJPS5
       =9iF7
       -----END PGP PUBLIC KEY BLOCK-----
-  skype:
+  skype-stable:
     repo: |
       deb [arch=amd64] https://repo.skype.com/deb stable main
     key: |

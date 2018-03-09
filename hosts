@@ -59,9 +59,7 @@ def hosts() -> Tuple[HostVars, Roles]:
             'google/google-chrome',
             'google/google-musicmanager',
             'google/google-talkplugin',
-            'skype',
-            'spotify',
-            'steam',
+            'skype-stable',
             'syncthing',
             'ppa:ansible/ansible',
         },
@@ -90,7 +88,7 @@ def hosts() -> Tuple[HostVars, Roles]:
     }
 
     ubuntu_release = {
-        gw('astoria'): 'artful',
+        gw('astoria'): 'bionic',
         gw('urika'): 'xenial',
         gw('blind'): 'xenial',
     }
