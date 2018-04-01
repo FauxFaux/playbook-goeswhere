@@ -61,7 +61,6 @@ def hosts() -> Tuple[HostVars, Roles]:
             'google/google-talkplugin',
             'skype-stable',
             'syncthing',
-            'ppa:ansible/ansible',
         },
         gw('urika'): {
             'ubuntu',
