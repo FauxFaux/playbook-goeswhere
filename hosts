@@ -79,7 +79,6 @@ def hosts() -> Tuple[HostVars, Roles]:
             'grafana',
             'syncthing',
             'ppa:certbot/certbot',
-            'ppa:jonathonf/vim',
         },
     }
 

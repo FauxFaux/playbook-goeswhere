@@ -74,14 +74,14 @@
 - name: php-fpm overrides directory
   become: yes
   file:
-    path=/etc/systemd/system/php7.0-fpm.service.d/
+    path=/etc/systemd/system/php7.2-fpm.service.d/
     state=directory
 
 - name: php-fpm hardening
   become: yes
   copy:
     src=systemd-php-fpm-overrides.conf
-    dest=/etc/systemd/system/php7.0-fpm.service.d/hardening.conf
+    dest=/etc/systemd/system/php7.2-fpm.service.d/hardening.conf
   notify:
     - reload systemd
     - restart php-fpm
@@ -90,7 +90,7 @@
   become: yes
   copy:
     src=phab-fpm.conf
-    dest=/etc/php/7.0/fpm/pool.d/phab-fpm.conf
+    dest=/etc/php/7.2/fpm/pool.d/phab-fpm.conf
   notify:
     - restart php-fpm
 

@@ -1,5 +1,5 @@
 # locatedb excludes slow stuff
 # ssh group
-# rm /etc/php/7.0/fpm/pool.d/www.conf to remove www-data
+# rm /etc/php/7.2/fpm/pool.d/www.conf to remove www-data
 # /etc/nginx/prometheus.htpasswd
 # nginx-compiler
