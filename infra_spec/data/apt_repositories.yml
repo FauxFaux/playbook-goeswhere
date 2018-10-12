@@ -1,7 +1,7 @@
 apt_repositories:
   docker:
     repo: |
-      deb [arch=amd64] https://download.docker.com/linux/ubuntu zesty stable
+      deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic edge
     key: |
       -----BEGIN PGP PUBLIC KEY BLOCK-----
 
