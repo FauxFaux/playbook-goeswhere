@@ -41,9 +41,8 @@ def hosts() -> Tuple[HostVars, Roles]:
     for role in ['base', 'phab', 'prom']:
         roles[role].hosts.add(gw('blind'))
 
-    roles['base'].hosts.update({gw('urika'), gw('astoria'), gw('ptang'), gw('anoia')})
-    roles['owned'].hosts.update({gw('urika'), gw('blind'), gw('astoria'), gw('anoia'), gw('ptang'),})
-    roles['influx'].hosts.update({gw('ptang'),})
+    roles['base'].hosts.update({gw('urika'), gw('astoria'), gw('anoia')})
+    roles['owned'].hosts.update({gw('urika'), gw('blind'), gw('astoria'), gw('anoia')})
 
     with open('infra_spec/data/apt_ppa_keys.yml') as f:
         apt_ppa_keys = yaml.safe_load(f)['apt_ppa_keys']
@@ -97,7 +96,7 @@ def hosts() -> Tuple[HostVars, Roles]:
         gw('astoria'): 'bionic',
         gw('anoia'): 'bionic',
         gw('urika'): 'xenial',
-        gw('blind'): 'xenial',
+        gw('blind'): 'bionic',
     }
 
     for host, reps in repos.items():
