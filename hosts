@@ -41,8 +41,8 @@ def hosts() -> Tuple[HostVars, Roles]:
     for role in ['base', 'phab', 'prom']:
         roles[role].hosts.add(gw('blind'))
 
-    roles['base'].hosts.update({gw('urika'), gw('astoria'), gw('anoia')})
-    roles['owned'].hosts.update({gw('urika'), gw('blind'), gw('astoria'), gw('anoia')})
+    roles['base'].hosts.update({'urika.lan', gw('astoria'), gw('anoia')})
+    roles['owned'].hosts.update({'urika.lan', gw('blind'), gw('astoria'), gw('anoia')})
 
     with open('infra_spec/data/apt_ppa_keys.yml') as f:
         apt_ppa_keys = yaml.safe_load(f)['apt_ppa_keys']
@@ -67,11 +67,10 @@ def hosts() -> Tuple[HostVars, Roles]:
             'skype-stable',
             'syncthing',
         },
-        gw('urika'): {
+        'urika.lan': {
             'ubuntu',
             'ubuntu_debug',
             'syncthing',
-            'ppa:jonathonf/vim',
         },
         gw('blind'): {
             'ubuntu',
@@ -87,14 +86,14 @@ def hosts() -> Tuple[HostVars, Roles]:
     ubuntu_mirror = {
         gw('astoria'): ubuntu_uk,
         gw('anoia'): ubuntu_uk,
-        gw('urika'): ubuntu_uk,
+        'urika.lan': ubuntu_uk,
         gw('blind'): 'http://ubuntu.mirrors.ovh.net/ftp.ubuntu.com/ubuntu/',
     }
 
     ubuntu_release = {
         gw('astoria'): 'bionic',
         gw('anoia'): 'bionic',
-        gw('urika'): 'xenial',
+        'urika.lan': 'bionic',
         gw('blind'): 'bionic',
     }
 
