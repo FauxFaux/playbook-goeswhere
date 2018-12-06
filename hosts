@@ -75,6 +75,7 @@ def hosts() -> Tuple[HostVars, Roles]:
         gw('blind'): {
             'ubuntu',
             'ubuntu_debug',
+            'docker',
             'grafana',
             'syncthing',
             'ppa:certbot/certbot',
