@@ -18,11 +18,10 @@ Group=phab
 
 #[Hardening]
 
-# No filesystem by default
-
 # strict isn't supported in Ubuntu 16.04, so start with full then try to upgrade
 ProtectSystem=full
 ProtectSystem=strict
+ReadWritePaths=/var/repo
 
 # these three protects aren't supported in Ubuntu 16.04, but don't add value as we should have no privs
 ProtectKernelTunables=true
@@ -32,7 +31,9 @@ ProtectKernelModules=true
 ProtectHome=true
 
 PrivateDevices=true
-PrivateTmp=true
+# Currently we're logging to /var/tmp. Clearly fixing that would be sensible.
+#PrivateTmp=true
+ReadWritePaths=/var/tmp/phd
 
 # can't be "NoNewPrivileges=true" as that breaks sendmail/postfix, due to setgid postdrop(1).
 CapabilityBoundingSet=

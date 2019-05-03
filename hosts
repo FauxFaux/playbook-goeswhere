@@ -51,12 +51,6 @@ def hosts() -> Tuple[HostVars, Roles]:
         apt_repositories = yaml.safe_load(f)['apt_repositories']
 
     repos = {
-        gw('astoria'): {
-            'ubuntu',
-            'ubuntu_debug',
-            'docker',
-            'syncthing',
-        },
         gw('anoia'): {
             'ubuntu',
             'ubuntu_debug',
@@ -84,14 +78,12 @@ def hosts() -> Tuple[HostVars, Roles]:
     ubuntu_uk = 'http://gb.archive.ubuntu.com/ubuntu/'
 
     ubuntu_mirror = {
-        gw('astoria'): ubuntu_uk,
         gw('anoia'): ubuntu_uk,
         'urika.lan': ubuntu_uk,
         gw('blind'): 'http://ubuntu.mirrors.ovh.net/ftp.ubuntu.com/ubuntu/',
     }
 
     ubuntu_release = {
-        gw('astoria'): 'bionic',
         gw('anoia'): 'cosmic',
         'urika.lan': 'bionic',
         gw('blind'): 'bionic',
