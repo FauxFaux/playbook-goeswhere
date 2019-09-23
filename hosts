@@ -38,7 +38,7 @@ def hosts() -> Tuple[HostVars, Roles]:
     hostvars = {}  # type: HostVars
     roles = collections.defaultdict(Role)  # type: Roles
 
-    for role in ['base', 'phab']:
+    for role in ['base', 'prom']:
         roles[role].hosts.add(gw('blind'))
 
     roles['base'].hosts.update({'urika.lan', gw('ptang'), 'anoia.lan'})
