@@ -41,8 +41,8 @@ def hosts() -> Tuple[HostVars, Roles]:
     for role in ['base', 'prom']:
         roles[role].hosts.add(gw('blind'))
 
-    roles['base'].hosts.update({'urika.lan', gw('ptang'), 'anoia.lan'})
-    roles['owned'].hosts.update({'urika.lan', gw('blind'), gw('ptang'), 'anoia.lan'})
+    roles['base'].hosts.update({'urika.lan', gw('ptang'), 'astoria.lan'})
+    roles['owned'].hosts.update({'urika.lan', gw('blind'), gw('ptang'), 'astoria.lan'})
 
     with open('infra_spec/data/apt_ppa_keys.yml') as f:
         apt_ppa_keys = yaml.safe_load(f)['apt_ppa_keys']
@@ -51,12 +51,11 @@ def hosts() -> Tuple[HostVars, Roles]:
         apt_repositories = yaml.safe_load(f)['apt_repositories']
 
     repos = {
-        'anoia.lan': {
+        'astoria.lan': {
             'ubuntu',
             'ubuntu_debug',
             'docker',
             'google/google-chrome',
-            'google/google-musicmanager',
             'google/google-talkplugin',
             'skype-stable',
             'syncthing',
@@ -82,14 +81,14 @@ def hosts() -> Tuple[HostVars, Roles]:
     ubuntu_uk = 'http://gb.archive.ubuntu.com/ubuntu/'
 
     ubuntu_mirror = {
-        'anoia.lan': ubuntu_uk,
+        'astoria.lan': ubuntu_uk,
         'urika.lan': ubuntu_uk,
         gw('blind'): 'http://ubuntu.mirrors.ovh.net/ftp.ubuntu.com/ubuntu/',
         gw('ptang'): 'http://ubuntu.mirrors.ovh.net/ftp.ubuntu.com/ubuntu/',
     }
 
     ubuntu_release = {
-        'anoia.lan': 'disco',
+        'astoria.lan': 'eoan',
         'urika.lan': 'bionic',
         gw('blind'): 'bionic',
         gw('ptang'): 'cosmic',
