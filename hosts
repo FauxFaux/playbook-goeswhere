@@ -56,8 +56,6 @@ def hosts() -> Tuple[HostVars, Roles]:
             'ubuntu_debug',
             'docker',
             'google/google-chrome',
-            'google/google-talkplugin',
-            'skype-stable',
             'syncthing',
         },
         'urika.lan': {
@@ -88,7 +86,7 @@ def hosts() -> Tuple[HostVars, Roles]:
     }
 
     ubuntu_release = {
-        'astoria.lan': 'eoan',
+        'astoria.lan': 'focal',
         'urika.lan': 'bionic',
         gw('blind'): 'bionic',
         gw('ptang'): 'cosmic',
