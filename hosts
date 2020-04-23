@@ -68,6 +68,8 @@ def hosts() -> Tuple[HostVars, Roles]:
             'ubuntu_debug',
             'docker',
             'syncthing',
+            'grafana',
+            'influx',
             'ppa:certbot/certbot',
         },
         gw('ptang'): {
