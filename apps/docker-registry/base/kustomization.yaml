@@ -1,0 +1,6 @@
+resources:
+  - deployment.yaml
+configMapGenerator:
+  - name: docker-registry
+    files:
+      - configs/config.yml
