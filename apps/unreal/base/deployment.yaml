@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unreal
+  labels:
+    app: unreal
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: unreal
+  template:
+    metadata:
+      labels:
+        app: unreal
+    spec:
+      volumes:
+        - name: config
+          hostPath:
+            path: /etc/k8s/unreal
+      containers:
+        - name: unreal
+          image: docker.fau.xxx/public/unreal
+          ports:
+            - containerPort: 6667
+            - containerPort: 6697
+          volumeMounts:
+            - name: config
+              mountPath: /opt/unreal/conf
+              readOnly: true
