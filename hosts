@@ -39,10 +39,10 @@ def hosts() -> Tuple[HostVars, Roles]:
     roles = collections.defaultdict(Role)  # type: Roles
 
     for role in ['base', 'prom']:
-        roles[role].hosts.add(gw('blind'))
+        roles[role].hosts.add(gw('sek'))
 
-    roles['base'].hosts.update({'urika.lan', gw('ptang'), 'astoria.lan'})
-    roles['owned'].hosts.update({'urika.lan', gw('blind'), gw('ptang'), 'astoria.lan'})
+    roles['base'].hosts.update({'urika.lan', 'astoria.lan'})
+    roles['owned'].hosts.update({'urika.lan', gw('sek'), 'astoria.lan'})
 
     with open('infra_spec/data/apt_ppa_keys.yml') as f:
         apt_ppa_keys = yaml.safe_load(f)['apt_ppa_keys']

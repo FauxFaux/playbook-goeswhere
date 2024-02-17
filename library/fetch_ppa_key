@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import json
 import os
 import subprocess
@@ -8,7 +8,7 @@ import tempfile
 import yaml
 
 if sys.version_info[0] < 3:
-    from urlparse import urlparse
+    from urllib.parse import urlparse
 else:
     import urllib.parse
     from urllib.parse import urlparse
@@ -71,9 +71,9 @@ def pick_mode(module, user, repo):
 
                 self.content = {}
 
-                for file_user, repos in file_content.items():
+                for file_user, repos in list(file_content.items()):
                     self.content[file_user] = {}
-                    for file_repo, file_data in repos.items():
+                    for file_repo, file_data in list(repos.items()):
                         self.content[file_user][file_repo] = literal(file_data)
 
                 if not user in self.content:
