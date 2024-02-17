@@ -1,0 +1,38 @@
+[Unit]
+Description=VictoriaMetrics Server
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=simple
+User=victoria-metrics
+Group=victoria-metrics
+
+ExecStart=/usr/local/bin/victoria-metrics-prod \
+    -retentionPeriod=100y
+
+WorkingDirectory=/var/lib/victoria-metrics
+ReadWritePaths=/var/lib/victoria-metrics
+
+Restart=on-failure
+
+#[Hardening]
+
+# No filesystem by default
+ProtectSystem=strict
+
+ProtectKernelTunables=true
+ProtectControlGroups=true
+ProtectKernelModules=true
+
+ProtectHome=true
+
+PrivateDevices=true
+PrivateTmp=true
+
+# shouldn't need to elevate
+NoNewPrivileges=true
+CapabilityBoundingSet=
+
+TasksMax=40

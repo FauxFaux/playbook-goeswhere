@@ -1,0 +1,5 @@
+- import_tasks: shared/handlers.yml
+
+- name: reload victoria-metrics
+  become: yes
+  service: name=victoria-metrics-server state=reloaded

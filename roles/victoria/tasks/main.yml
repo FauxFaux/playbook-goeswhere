@@ -1,0 +1,25 @@
+- name: users
+  become: yes
+  user: name={{ item }} system=yes
+  with_items:
+    - victoria-metrics
+
+- name: copy victoria-metrics binaries
+  become: yes
+  copy:
+    src={{ item }}
+    dest=/usr/local/bin/{{ item }}
+    mode=a+rx
+  with_items:
+    - victoria-metrics-prod
+
+- name: data directory
+  become: yes
+  file:
+    name=/var/lib/victoria-metrics
+    state=directory
+    owner=victoria-metrics
+
+- name: copy victoria-metrics server unit
+  become: yes
+  systemd_unit: src=victoria-metrics-server.service
