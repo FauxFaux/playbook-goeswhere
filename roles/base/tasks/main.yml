@@ -11,6 +11,13 @@
     # TODO
     - can-ssh
 
+- name: usr local bin dir
+  become: yes
+  file:
+    name=/usr/local/bin
+    mode=a+rx
+    state=directory
+
 - name: copy binaries
   become: yes
   copy:

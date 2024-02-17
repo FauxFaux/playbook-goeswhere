@@ -5,6 +5,6 @@
     state=directory
     owner=prom-exporter
 
-#- name: node exporter unit
-#  become: yes
-#  systemd_unit: src=prometheus-node-exporter.service
+- name: node exporter unit
+  become: yes
+  systemd_unit: src=prometheus-node-exporter.service

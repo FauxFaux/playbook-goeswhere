@@ -10,8 +10,8 @@ Group=prom-exporter
 
 WorkingDirectory=/var/lib/node-exporter
 ExecStart=/usr/local/bin/node_exporter \
-    -collector.textfile.directory=. \
-    -web.listen-address=localhost:9100
+    --collector.textfile.directory=. \
+    --web.listen-address=localhost:9100
 
 Restart=on-failure
 
