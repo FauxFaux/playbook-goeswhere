@@ -14,11 +14,6 @@
     - owned
 
 - hosts:
-    - phab
-  roles:
-    - phab
-
-- hosts:
     - prom
   roles:
     - prom

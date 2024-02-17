@@ -22,7 +22,6 @@ in my case, managed by the `hosts` file. These are the roles:
  * `base`: machine knows what it is
  * `owned`: I own this machine and will apply my preferences
  * `influx`: InfluxDB host
- * `phab`: Phabricator host
  * `prom`: Prometheus monitoring host
 
 I manage my user account setup (e.g. i3wm config) in a different repository:
