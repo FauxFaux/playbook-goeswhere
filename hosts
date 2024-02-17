@@ -72,10 +72,6 @@ def hosts() -> Tuple[HostVars, Roles]:
             'influx',
             'ppa:certbot/certbot',
         },
-        gw('ptang'): {
-            'ubuntu',
-            'ubuntu_debug',
-        },
     }
 
     ubuntu_uk = 'http://gb.archive.ubuntu.com/ubuntu/'
@@ -84,14 +80,12 @@ def hosts() -> Tuple[HostVars, Roles]:
         'astoria.lan': ubuntu_uk,
         'urika.lan': ubuntu_uk,
         gw('blind'): 'http://ubuntu.mirrors.ovh.net/ftp.ubuntu.com/ubuntu/',
-        gw('ptang'): 'http://ubuntu.mirrors.ovh.net/ftp.ubuntu.com/ubuntu/',
     }
 
     ubuntu_release = {
         'astoria.lan': 'focal',
         'urika.lan': 'bionic',
         gw('blind'): 'bionic',
-        gw('ptang'): 'cosmic',
     }
 
     for host, reps in repos.items():
