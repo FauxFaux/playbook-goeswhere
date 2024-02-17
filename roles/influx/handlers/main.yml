@@ -1,1 +1,1 @@
-- include: shared/handlers.yml
+- import_tasks: shared/handlers.yml

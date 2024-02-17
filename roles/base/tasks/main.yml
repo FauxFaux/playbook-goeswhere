@@ -20,4 +20,4 @@
   with_items:
     - node_exporter
 
-- include: exporters.yml
+- import_tasks: exporters.yml
