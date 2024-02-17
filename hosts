@@ -53,19 +53,16 @@ def hosts() -> Tuple[HostVars, Roles]:
     repos = {
         'astoria.lan': {
             'ubuntu',
-            'ubuntu_debug',
             'docker',
             'google/google-chrome',
             'syncthing',
         },
         'urika.lan': {
             'ubuntu',
-            'ubuntu_debug',
             'syncthing',
         },
         gw('sek'): {
             'ubuntu',
-            'ubuntu_debug',
             'docker',
             'syncthing',
             'grafana',

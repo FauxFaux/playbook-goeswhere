@@ -36,6 +36,8 @@
     - acl                 # for the ansible setfacl stuff
     - git
     - python3-apt
+    # to enable the ddebs repo:
+    - ubuntu-dbgsym-keyring
     # interactive use helpers:
     - curl
     - ncdu
