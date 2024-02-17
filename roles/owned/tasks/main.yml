@@ -1,6 +1,7 @@
 - name: setup apt keys
   become: yes
   write_apt_keys: spec={{apt_keys}} exclusive=yes remove=yes
+  when: ansible_facts['distribution_major_version'] == '22'
 
 - name: setup apt sources.list
   template:
@@ -8,6 +9,7 @@
     dest=/etc/apt/sources.list
     backup=yes
   become: yes
+  when: ansible_facts['distribution_major_version'] == '22'
 
 - name: setup apt sources.d
   become: yes
@@ -15,16 +17,16 @@
     spec={{apt_sources}}
     exclusive=yes
     remove=yes
+  when: ansible_facts['distribution_major_version'] == '22'
 
 - name: packages
   become: yes
   apt:
     name={{item}}
-    state=installed
+    state=present
     install_recommends=no
   with_items:
     # core things that are missing from some images:
-    - apt-transport-https
     - libpam-systemd      # enable systemd --user
     - openssh-server      # fixes e.g. sftp being missing
     - procps              # pwdx, pkill, free, etc.
@@ -33,11 +35,9 @@
     # ansible/setup helpers:
     - acl                 # for the ansible setfacl stuff
     - git
-    - python-apt
-    - python
+    - python3-apt
     # interactive use helpers:
     - curl
-    - connect-proxy
     - ncdu
     - tmux
     - zsh

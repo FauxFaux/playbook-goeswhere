@@ -63,7 +63,7 @@ def hosts() -> Tuple[HostVars, Roles]:
             'ubuntu_debug',
             'syncthing',
         },
-        gw('blind'): {
+        gw('sek'): {
             'ubuntu',
             'ubuntu_debug',
             'docker',
@@ -79,13 +79,13 @@ def hosts() -> Tuple[HostVars, Roles]:
     ubuntu_mirror = {
         'astoria.lan': ubuntu_uk,
         'urika.lan': ubuntu_uk,
-        gw('blind'): 'http://ubuntu.mirrors.ovh.net/ftp.ubuntu.com/ubuntu/',
+        gw('sek'): 'http://nova.clouds.archive.ubuntu.com/ubuntu/',
     }
 
     ubuntu_release = {
-        'astoria.lan': 'focal',
-        'urika.lan': 'bionic',
-        gw('blind'): 'bionic',
+        'astoria.lan': 'mantic',
+        'urika.lan': 'jammy',
+        gw('sek'): 'jammy',
     }
 
     for host, reps in repos.items():
