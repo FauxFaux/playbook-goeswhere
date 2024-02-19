@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+
+from ansible.module_utils.basic import *
+
+
+def main():
+    module = AnsibleModule(
+        argument_spec=dict(
+            name=dict(required=True, type='str'),
+            app_port=dict(required=True, type='int'),
+            target=dict(required=False, type='str'),
+        ),
+        supports_check_mode=True
+    )
+
+    name = module.params['name']
+    app_port = module.params['app_port']
+    ext_port = app_port + 10000
+    target = module.params.get('target', None)
+    decrypt = target is not None
+
+    unit = f'''
+[Unit]
+Description=spiped-{name}
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+DynamicUser=yes
+
+ExecStart=/usr/bin/spiped \\
+    -{'d' if decrypt else 'e'} \\
+    -k /var/lib/private/spiped/{name}/key.key \\
+    -s '[::]:{ext_port if decrypt else app_port}' \\
+    -t '{target if target else 'localhost'}:{app_port if decrypt else ext_port}' \\
+    -F
+
+StateDirectory=spiped/{name}
+
+Restart=on-failure
+RestartSec=60s
+
+#[Hardening]
+
+ProtectSystem=strict
+ProtectHome=yes
+
+ProtectKernelTunables=true
+ProtectControlGroups=true
+ProtectKernelModules=true
+
+PrivateDevices=true
+
+# shouldn't need to elevate
+NoNewPrivileges=true
+CapabilityBoundingSet=
+
+TasksMax=20
+'''.strip()
+
+    changed = set_file(module, f'/etc/systemd/system/spiped-{name}.service', unit)
+
+    module.exit_json(changed=changed)
+
+
+def set_file(module: AnsibleModule, path: str, content: str):
+    changed = False
+    try:
+        with open(path, 'r') as f:
+            changed = f.read() != content
+    except FileNotFoundError:
+        changed = True
+
+    if changed and module.check_mode:
+        module.exit_json(changed=True)
+
+    with open(path, 'w') as f:
+        f.write(content)
+
+    return changed
+
+
+main()

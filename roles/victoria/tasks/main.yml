@@ -23,3 +23,9 @@
 - name: copy victoria-metrics server unit
   become: yes
   systemd_unit: src=victoria-metrics-server.service
+
+- name: spiped for victoria-metrics
+  become: yes
+  spiped:
+    name: victoria-metrics
+    app_port: 8428
